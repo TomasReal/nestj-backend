@@ -6,11 +6,11 @@ import { User } from './entity/user.entity';
 export class UsersController {
     constructor(private readonly usersService: UsersService) { }
 
-    @Post()
-    createUser(@Body() body: Partial<User>) {
-        const user: User = { ...body } as User;
-        return this.usersService.createUser(user);
-    }
+    // @Post()
+    // createUser(@Body() body: Partial<User>) {
+    //     const user: User = { ...body } as User;
+    //     return this.usersService.createUser(user);
+    // }
 
     @Get()
     findAllUsers() {
