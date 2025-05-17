@@ -1,6 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignupUserDto } from 'src/DTO/signup-user.dto';
+import { LoginUserDto } from 'src/DTO/login-user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -12,5 +13,22 @@ export class AuthController {
 
         // Return the user object without the password
         return user;
+    }
+
+    @Post('login')
+    async login(@Body() loginUserDto: LoginUserDto) {
+        const { email, password } = loginUserDto;
+        const result = await this.authService.loginUser(email, password);
+
+        if (!result) {
+            return { message: 'Invalid credentials' };
+        }
+
+        return {
+            message: 'Login successful',
+            accessToken: result.accessToken,
+            user: result.user,
+        };
+        // Return the access token and user object
     }
 }
