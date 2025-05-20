@@ -26,6 +26,7 @@ import { DecoratorsModule } from './decorators/decorators.module';
         schema: 'public',
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: true,
+        dropSchema: false,
       }),
     }),
     UsersModule,

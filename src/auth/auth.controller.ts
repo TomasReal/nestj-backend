@@ -1,7 +1,8 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Param, Post, Put } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignupUserDto } from 'src/DTO/signup-user.dto';
 import { LoginUserDto } from 'src/DTO/login-user.dto';
+import { UpdateUserDto } from 'src/DTO/update-user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -31,4 +32,5 @@ export class AuthController {
         };
         // Return the access token and user object
     }
+
 }

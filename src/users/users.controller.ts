@@ -6,12 +6,6 @@ import { User } from './entity/user.entity';
 export class UsersController {
     constructor(private readonly usersService: UsersService) { }
 
-    // @Post()
-    // createUser(@Body() body: Partial<User>) {
-    //     const user: User = { ...body } as User;
-    //     return this.usersService.createUser(user);
-    // }
-
     @Get()
     findAllUsers() {
         return this.usersService.findAllUsers();
@@ -19,12 +13,14 @@ export class UsersController {
 
     @Get(':id')
     findOneUser(@Param() params: { id: number }) {
+        delete User.password; // Remove password if present
         return this.usersService.findOneUser(params.id);
     }
 
     @Put(':id')
     updateUser(@Param() params: { id: number }, @Body() body: Partial<User>) {
         const user: User = { ...body } as User;
+        delete user.password; // Remove password if present
         return this.usersService.updateUser(params.id, user);
     }
 

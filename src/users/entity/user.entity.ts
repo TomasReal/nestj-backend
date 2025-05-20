@@ -13,5 +13,6 @@ export class User {
 
     @Column()
     password: string;
+    static password: any;
 
 }

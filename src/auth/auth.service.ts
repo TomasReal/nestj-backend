@@ -5,6 +5,7 @@ import { User } from 'src/users/entity/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { UpdateUserDto } from 'src/DTO/update-user.dto';
 
 export interface RegisterResponse {
     user: User;
@@ -85,6 +86,40 @@ export class AuthService {
             accessToken,
             message: 'Welcome, user logued successfully'
         }// Return the user object without the password
+    }
+
+    async updateUser(updateUserDto: UpdateUserDto): Promise<User> {
+        const { name, email, password } = updateUserDto;
+        try {
+
+            // Find the user by email
+            const user = await this.userRepository.findOne({ where: { email } });
+
+            if (!user) {
+                throw new UnauthorizedException('Invalid credentials');
+            }
+
+            // Update the user properties
+            if (name) {
+                user.name = name;
+            }
+            if (email) {
+                user.email = email;
+            }
+            if (password) {
+                // Hash the new password
+                const hashedPassword = await bcrypt.hash(password, 10);
+                user.password = hashedPassword;
+            }
+
+            // Save the updated user to the database
+            const updatedUser = await this.userRepository.save(user);
+            delete updatedUser.password; // Remove the password from the returned user object
+
+            return updatedUser; // Return the updated user object without the password
+        } catch (error) {
+            throw new UnauthorizedException('Error updating user');
+        }
     }
 
 }
